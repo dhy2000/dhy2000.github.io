@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"dhy2000.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="表达式解析与求导">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BUAA OO 第一单元（表达式求导）单元总结">
+<meta property="og:url" content="http://dhy2000.github.io/2021/03/25/oo-expr-2021/index.html">
+<meta property="og:site_name" content="dhy2000&#39;s blog">
+<meta property="og:description" content="表达式解析与求导">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://dhy2000.github.io/oo-expr-2021/umlHw1.png">
+<meta property="og:image" content="http://dhy2000.github.io/oo-expr-2021/umlHw2.png">
+<meta property="og:image" content="http://dhy2000.github.io/oo-expr-2021/redMethodMetrics.png">
+<meta property="og:image" content="http://dhy2000.github.io/oo-expr-2021/totalMethodMetrics.png">
+<meta property="og:image" content="http://dhy2000.github.io/oo-expr-2021/classMetrics.png">
+<meta property="og:image" content="http://dhy2000.github.io/oo-expr-2021/exprTree.png">
+<meta property="article:published_time" content="2021-03-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-03-24T16:00:00.000Z">
+<meta property="article:author" content="dhy2000">
+<meta property="article:tag" content="BUAA">
+<meta property="article:tag" content="OO">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="递归下降">
+<meta property="article:tag" content="表达式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://dhy2000.github.io/oo-expr-2021/umlHw1.png">
+
+
+<link rel="canonical" href="http://dhy2000.github.io/2021/03/25/oo-expr-2021/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://dhy2000.github.io/2021/03/25/oo-expr-2021/","path":"2021/03/25/oo-expr-2021/","title":"BUAA OO 第一单元（表达式求导）单元总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>BUAA OO 第一单元（表达式求导）单元总结 | dhy2000's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">dhy2000's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%9F%BA%E4%BA%8E%E5%BA%A6%E9%87%8F%E6%9D%A5%E5%88%86%E6%9E%90%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">一、基于度量来分析程序结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%B1%BB%E5%9B%BE"><span class="nav-number">1.1.</span> <span class="nav-text">类结构与类图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">代码复杂度分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-number">1.2.1.</span> <span class="nav-text">方法复杂度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-number">1.2.2.</span> <span class="nav-text">类复杂度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9%E5%88%86%E6%9E%90"><span class="nav-number">1.3.</span> <span class="nav-text">优缺点分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">1.3.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">1.3.2.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%88%86%E6%9E%90%E8%87%AA%E5%B7%B1%E7%A8%8B%E5%BA%8F%E7%9A%84-Bug"><span class="nav-number">2.</span> <span class="nav-text">二、分析自己程序的 Bug</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%9C%E4%B8%9A"><span class="nav-number">2.1.</span> <span class="nav-text">第一次作业</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E4%BD%9C%E4%B8%9A"><span class="nav-number">2.2.</span> <span class="nav-text">第二次作业</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BD%9C%E4%B8%9A"><span class="nav-number">2.3.</span> <span class="nav-text">第三次作业</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%88%86%E6%9E%90%E8%87%AA%E5%B7%B1%E5%8F%91%E7%8E%B0%E5%88%AB%E4%BA%BA%E7%A8%8B%E5%BA%8F-Bug-%E6%89%80%E9%87%87%E7%94%A8%E7%9A%84%E7%AD%96%E7%95%A5"><span class="nav-number">3.</span> <span class="nav-text">三、分析自己发现别人程序 Bug 所采用的策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%9C%E4%B8%9A-1"><span class="nav-number">3.1.</span> <span class="nav-text">第一次作业</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E3%80%81%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BD%9C%E4%B8%9A"><span class="nav-number">3.2.</span> <span class="nav-text">第二、第三次作业</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E9%87%8D%E6%9E%84%E7%BB%8F%E5%8E%86%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">四、重构经历总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%BF%83%E5%BE%97%E4%BD%93%E4%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">五、心得体会</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">dhy2000</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://dhy2000.github.io/2021/03/25/oo-expr-2021/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="dhy2000">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="dhy2000's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="BUAA OO 第一单元（表达式求导）单元总结 | dhy2000's blog">
+      <meta itemprop="description" content="表达式解析与求导">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BUAA OO 第一单元（表达式求导）单元总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-03-25 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-25T00:00:00+08:00">2021-03-25</time>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">表达式解析与求导</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>前三周高强度的第一单元作业结束了，终于到了可以缓口气的博客周。本篇博客为第一单元三次作业的总结。</p>
+<h2 id="一、基于度量来分析程序结构"><a href="#一、基于度量来分析程序结构" class="headerlink" title="一、基于度量来分析程序结构"></a>一、基于度量来分析程序结构</h2><p>本人的三次作业架构相似，中途未发生重构，所以本部分直接将三次作业合在一起进行分析。</p>
+<h3 id="类结构与类图"><a href="#类结构与类图" class="headerlink" title="类结构与类图"></a>类结构与类图</h3><p>由于本人作业中使用的类以及存在的继承与接口关系较多，采用 StarUML 或 ProcessOn 手动绘制类图过于繁琐，故采用 IDEA 生成。</p>
+<p>第一次作业类图：<br><img src="/oo-expr-2021/umlHw1.png" alt="umlHw1"></p>
+<p>第二次和第三次作业类图：<br><img src="/oo-expr-2021/umlHw2.png" alt="umlHw2"></p>
+<p>可以看出前后两张类图的差异仅体现在表达式中个体元素 <code>Item</code> 的种类不同，其他类的结构没有明显变化。</p>
+<p>类结构设计：</p>
+<ul>
+<li><p>表达式的存储</p>
+<ul>
+<li><code>Expression</code> ：”表达式”，为一个或若干个 “项” 的代数和。</li>
+<li><code>Term</code> ：”项”，为一个或多个 “因子” 的乘积。</li>
+<li><code>Factor</code> ：”因子”，由底数和指数两部分构成，其中底数的类型任意，为 <code>Item</code> 的子类；指数只能是常数 <code>Constant</code> ，对于常数因子和表达式因子等不含指数的，人为规定其指数部分为 <code>1</code> 。</li>
+<li><code>Item</code> ：表达式中的基本元素，可以近似对应成表达式树中的叶子节点。<ul>
+<li><code>Constant</code> ：常数，内部数据为一个 <code>BigInteger</code> ，支持加减&#x2F;乘&#x2F;幂&#x2F;比较等运算。</li>
+<li><code>Variable</code> ：变量 “x”</li>
+<li><code>Sine</code> ：三角函数 $\sin$ ，内部含有一个因子( <code>Factor</code> ) 。</li>
+<li><code>Cosine</code> ：三角函数 $\cos$ ，内部含有一个因子 ( <code>Factor</code> ) 。</li>
+<li><code>InnerExpression</code> ：子表达式（对应”表达式因子”），内部含有一个表达式 ( <code>Expression</code> )</li>
+</ul>
+</li>
+</ul>
+<p>这些类之间形成了一个有层次的<strong>树</strong>状结构（在数据结构学过的 “表达式树” 的基础上进行了改进）</p>
+<p>以上所有类均实现(重写)了 <code>clone</code> , <code>equals</code> , <code>hashCode</code>, <code>toString</code> 方法。</p>
+</li>
+<li><p>表达式的解析</p>
+<ul>
+<li><code>ExpressionParser</code> ：表达式解析工厂类，含有一个 <code>public static</code> 方法作为总入口，以及若干个 <code>private static</code> 方法用于分别解析表达式文法的各个成分。采用<strong>递归下降</strong>法实现，兼具内容解析和格式检查功能。</li>
+<li><code>StringTokenStream</code> ：对应递归下降文法分析中的 “符号流”，支持提取当前待解析的的符号以及前进到下一个符号。该类实际的实现较为简单，维护了待解析的字符串和一个<strong>下标</strong>，支持从当前下标向前获取连续若干个字符，以及将下标向前移动若干个字符。更加科学的做法是实现一个”分词器” ( <code>Tokenizer</code> )，将输入的表达式分成若干 <code>Token</code> （例如 <code>sin</code> , <code>**</code> 等直接作为一整个 <code>Token</code> 而不是分立的字符），每次获取一个 <code>Token</code> 。</li>
+<li><code>WrongFormatException</code> ：自定义的 “格式错误” 异常，由表达式解析工厂的解析方法抛出。</li>
+</ul>
+</li>
+<li><p>功能性的接口</p>
+<ul>
+<li><p><code>Simplifiable</code> ：该接口含有一个 <code>simplify</code> 方法，用来进行基础的合并化简。</p>
+<p>注：</p>
+<ul>
+<li>每次调用该方法都会返回一个 <strong>新的</strong> 对象，不会在原来的对象上直接做修改。</li>
+<li>该接口仅用于表达式内合并同类项，项内合并相同底数的因子和常数，去掉 1 和 0 等较为基础的合并化简，不涉及三角函数优化等。</li>
+</ul>
+</li>
+<li><p><code>Derivable</code> ：该接口含有一个 <code>derive</code> 方法，对表达式树中相应的元素求导，返回求导后的结果。与 <code>simplify</code> 类似，每次调用都返回<strong>新的</strong>对象。</p>
+</li>
+<li><p><code>MultipleArgument</code> ：用来管理表达式树中含有多个分叉（即内部含有一个容器）的节点，包括 <code>Expression</code> （ <code>Term</code> 的代数和）与 <code>Term</code>  （ <code>Factor</code> 的连乘 ）。</p>
+<p>该接口包含若干管理容器的方法，其中有两个关键的方法：</p>
+<ul>
+<li><p><code>add</code> ：向容器中添加一个元素。</p>
+<p>该方法应能够处理重复元素的情况，例如向一个含有项 <code>&lt;3*x, 2*sin(x)&gt;</code> 的表达式中添加一个 <code>3*x</code> ，最终不能只留下一个 <code>3*x</code> 。</p>
+</li>
+<li><p><code>merge</code> ：传入另一个实现了 <code>MultipleArgument</code> 的节点对象，将对方容器内的元素合并至自己的容器。例如<strong>两个表达式相加成一个表达式</strong>，或者<strong>两个项相乘成为一个项</strong>。（后来才知道这个方法对应 Java 容器的 <code>addAll</code> 方法）</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>其他</p>
+<ul>
+<li>主类</li>
+<li>调试信息打印类（未在类图中给出）：含有若干 <code>boolean</code> 类型的 “开关” 用来控制调试信息的输出。在正式提交的作业中应使调试信息开关为 <code>false</code> 。</li>
+</ul>
+</li>
+</ul>
+<h3 id="代码复杂度分析"><a href="#代码复杂度分析" class="headerlink" title="代码复杂度分析"></a>代码复杂度分析</h3><h4 id="方法复杂度"><a href="#方法复杂度" class="headerlink" title="方法复杂度"></a>方法复杂度</h4><p>由于本人作业的类较多，方法数目也较多，所以 <code>Method Metrics</code> 生成的表格过长，无法在一屏内完整截图，故只展示总体情况与出现红色的条目。</p>
+<p><img src="/oo-expr-2021/redMethodMetrics.png" alt="redMethodMetrics"></p>
+<p><img src="/oo-expr-2021/totalMethodMetrics.png" alt="totalMethodMetrics"></p>
+<p>总体来看，本人作业中整体的复杂程度和耦合程度较低，仅存在少数方法的 <code>ev(G)</code> 指数超标。这些 <code>ev(G)</code> 较高的方法的共性是含有较多的 <code>if-else</code> 分支（因子的输出和项的输出需要考虑很多诸如 “省略1” “省略符号” 等情况；在递归下降解析工厂中对于三角函数和有符号整数的解析方法进行了较多的判断）</p>
+<h4 id="类复杂度"><a href="#类复杂度" class="headerlink" title="类复杂度"></a>类复杂度</h4><p><img src="/oo-expr-2021/classMetrics.png" alt="classMetrics"></p>
+<p>总体基本符合高内聚低耦合，但是表达式解析工厂类和”项” ( <code>Term</code> ) 类的圈复杂度仍然较高，可以进一步简化。</p>
+<h3 id="优缺点分析"><a href="#优缺点分析" class="headerlink" title="优缺点分析"></a>优缺点分析</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>在表达式的存储上采用<strong>树</strong>状结构存储，层次化较好且便于维护与扩展<ul>
+<li>在普通表达式树的基础上进行了一定的改良（将原本只有二叉的加法&#x2F;减法&#x2F;乘法改造成支持多叉的<strong>代数和</strong>&#x2F;<strong>连乘</strong>），便于进行合并与化简等操作且降低了树的深度</li>
+<li>采用 <code>HashSet</code> 容器，便于管理同类项的合并等</li>
+<li>求导和化简都是顺从树的层次结构的，较好地保证了<strong>正确性</strong></li>
+</ul>
+</li>
+<li>将表达式树节点的特定行为抽象成<strong>接口</strong></li>
+<li>采用<strong>递归下降</strong>法进行输入表达式的解析<ul>
+<li>严格遵守”形式化表述”，层次清晰且不易出错</li>
+<li>代码编写简洁，可读性好</li>
+<li>可扩展性高<ul>
+<li>在迭代开发中只需对新增的成分实现相应的解析方法，其余代码无需修改。</li>
+</ul>
+</li>
+<li>便于进行格式检查<ul>
+<li>无需考虑 WF 的种类，只需要在每种成分的解析方法中加一些判断，当遇到<strong>不符合文法</strong>的内容导致当前成分<strong>无法继续解析</strong>时即为格式错误，直接抛出 Wrong Format 异常。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>层次结构不够灵活，存在一定的冗余（过度封装）。</li>
+<li>性能优化做得不够好，一些化简&#x2F;优化的方法较为冗长。</li>
+</ul>
+<p>附一张本人存储表达式的树状结构示意图：</p>
+<p><img src="/oo-expr-2021/exprTree.png" alt="exprTree"></p>
+<h2 id="二、分析自己程序的-Bug"><a href="#二、分析自己程序的-Bug" class="headerlink" title="二、分析自己程序的 Bug"></a>二、分析自己程序的 Bug</h2><p>本人的三次作业均未在强测及互测中出现 Bug ，但是在中测以及本地测试中三次作业均有发现 Bug ，且均较为明显，因此均较容易修复。</p>
+<h3 id="第一次作业"><a href="#第一次作业" class="headerlink" title="第一次作业"></a>第一次作业</h3><p>由于本人采用 <code>HashSet</code> 容器来存储表达式中各个项以及项中的各个因子，这种设计使得表达式中不能出现完全相同的项，项中也不能出现完全相同的因子。因此在化简表达式时，由于一些项在未化简时形态不同（例如 <code>6*x**3</code> 和 <code>2*x*3*x**2</code>）但化简后完全相同，因此一开始逐项化简后采用 <code>.collect(Collectors.toSet())</code> 导出结果时发生了 Hash 冲突从而使得<strong>结果中 “少” 了一项</strong>。</p>
+<p>解决办法是去掉 <code>toSet</code> 而是采用自己编写的可以判重的 <code>Expression</code> 类的 <code>add</code> 方法（不要直接 <code>collect</code> 也不要用原生 <code>HashSet</code> 的 <code>add</code> ）。</p>
+<p>（后来想到可以用 <code>HashMap</code> 代替 <code>HashSet</code> 来更好地进行合并同类项，但是本人没有这样重构）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ------ WRONG ------</span></span><br><span class="line">Set&lt;Term&gt; simplifiedTermSet = term.stream().map(Term::simplify)</span><br><span class="line">    .collect(Collectors.toSet());</span><br><span class="line"><span class="comment">// ------ FIXED ------</span></span><br><span class="line"><span class="type">Expression</span> <span class="variable">simplified</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Expression</span>();</span><br><span class="line">term.stream().map(Term::simplify).forEach(simplified::add);</span><br></pre></td></tr></table></figure>
+
+<h3 id="第二次作业"><a href="#第二次作业" class="headerlink" title="第二次作业"></a>第二次作业</h3><p>在完成正确性要求时(未加三角函数优化)无 bug ，但是在三角函数优化中发现 bug 。</p>
+<p>本人只实现了一种较为简单的三角函数优化，将表达式中含有 <code>sin(x)**2</code> 和含有 <code>cos(x)**2</code> (但不含 <code>sin(x)**2</code> )因子的项(去掉三角平方因子)提取到 <code>HashMap</code> 中（ key 为该项去掉系数去掉三角平方项的剩余部分， value 为系数），寻找除了常数系数和三角平方因子以外的”变量”部分相同的项，即两个 <code>HashMap</code> 的 <code>keySet</code> 的交集（例如 <code>3 * x**2 * sin(x)**2</code> 与 <code>5 * x**2 * cos(x)**2</code>），根据两个系数的大小和正负关系分类讨论进行合并处理。</p>
+<p>在实现该三角函数优化时由于写代码粗心，导致完成优化后发现两处 Bug ：</p>
+<ul>
+<li>对于没能成功合并三角平方的项（例如表达式只含有 <code>3 * x**2 * sin(x)**2</code> 但不含有 <code>3 * x **2 * cos(x)**2</code> ），由于上一步提取时是以 <code>&lt; x**2 , 3 &gt;</code> 的形式进行存储，在还原时<strong>忘记加回正弦因子</strong>从而得到 <code>3 * x**2</code> 。</li>
+<li>在进行了三角合并后应当返回合并之后新生成的 <code>term</code> ，<strong>误写成了旧的</strong> 。</li>
+</ul>
+<h3 id="第三次作业"><a href="#第三次作业" class="headerlink" title="第三次作业"></a>第三次作业</h3><p>第三次作业在第二次作业的基础上进行了进一步迭代，由于本人在前两次作业中均已在递归下降解析器中判断了 <code>WRONG FORMAT</code> （并已经进行过较充分的测试）且今年的第二次作业已经实现了表达式因子，因此从第二次到第三次作业的迭代开发中进行很少改动即可（几乎只需在输入解析器中修改三角函数的文法并添加对指数范围的判断）。完成第三次作业开发后发现并修复了两处 Bug ：</p>
+<ul>
+<li>余弦函数 <code>Cosine</code> 的求导方法(链式求导)<strong>未对其参数求导</strong>（但是正弦函数 <code>Sine</code> 却写了）。由于第二次作业中三角函数内只有 $x$ ，求导结果为 $1$，因此该 Bug 并未影响第二次作业的正确性，但拖到第三次作业却暴露了。</li>
+<li>在三角函数中含有一个幂函数因子且指数为 $2$ 时（例：<code>sin(x**2)</code> ），由于本人在输出幂函数因子（也就是在其 <code>toString</code> 方法）为了缩短长度对 <code>x**2</code> 进行了特判并转化为 <code>x*x</code> ，但是到了三角函数内，<strong>输出 <code>sin(x*x)</code></strong> 却导致了输出结果的格式错误。解决办法为新增一个与 <code>toString</code> 类似并且不特殊处理 <code>x**2</code> 的方法（该方法仅在三角函数的 <code>toString</code> 中用到）</li>
+</ul>
+<h2 id="三、分析自己发现别人程序-Bug-所采用的策略"><a href="#三、分析自己发现别人程序-Bug-所采用的策略" class="headerlink" title="三、分析自己发现别人程序 Bug 所采用的策略"></a>三、分析自己发现别人程序 Bug 所采用的策略</h2><h3 id="第一次作业-1"><a href="#第一次作业-1" class="headerlink" title="第一次作业"></a>第一次作业</h3><p>在第一次作业中本人搭建了测试数据生成器，自动评测机和答案正确性判断程序等工具。其中测试数据生成器基于指导书中表达式的形式化表述，与表达式输入解析器结构近似的递归下降方法用 Java 语言编写，以随机生成为主，但在随机生成时也适当引入了常量池等机制来生成具有一定层次的数据。答案正确性检查器采用 Python 基于 Sympy 库编写，并通过 <code>re.sub</code> 对数字前导零和多个连续正负号进行预处理，并利用 Sympy 求导结果和自己程序输出的结果相减并 <code>simplify</code> 后判断是否为零来检验正确性。</p>
+<p>由于第一次作业要求较为简单，故随机生成的测试数据强度尚可。互测阶段通过自动测试成功 Hack 出来 4 个 Bug.</p>
+<h3 id="第二、第三次作业"><a href="#第二、第三次作业" class="headerlink" title="第二、第三次作业"></a>第二、第三次作业</h3><p>第二次作业中本人修改了答案正确性判断程序，由于引入了三角函数，难以直接 <code>simplify</code> 所以采用与课程平台相同的评测手段，进行大量随机取点并比较，但是这种方式在本机自动测试时实测效率略低。</p>
+<p>由于本人在第二三次作业中并未做很多优化，因此未能针对优化构造测试数据。互测采用的策略以手工构造的数据为主，包括常见的极端数据以及自己测试过程中遇到过 Bug 的数据。自动测试方面，由于本人没有想到保证数据强度的思路（特别是针对优化的 Hack ），故没有做自动生成，直接借用了一些已有的测试数据（来自同学，讨论区，网络等）。随机数据+自动测试在本人的互测屋中并未起到较大作用，反而是手动构造的特定数据成功 Hack 了同屋的人。后两次作业的互测中本人均只成功 Hack 了两次。</p>
+<h2 id="四、重构经历总结"><a href="#四、重构经历总结" class="headerlink" title="四、重构经历总结"></a>四、重构经历总结</h2><p>本人在本单元三次作业中<strong>并未</strong>重构代码，没有重构经历。</p>
+<h2 id="五、心得体会"><a href="#五、心得体会" class="headerlink" title="五、心得体会"></a>五、心得体会</h2><p>总体来说，本人的作业较良好地采用面向对象的设计，层次化与低耦合提高了作业的正确性以及可扩展性，也保住了较高的作业分数：三次作业强测均获得了 99+ 的强测分数并且互测中未被 Hack 出来任何 Bug ；迭代增量开发的过程也较为顺利；但另一方面，由于一些细节设计的不够灵活，并且存在一定程度的”过度封装”，增加了优化的难度，所以在性能上表现略有逊色：每次作业强测都有性能分薄弱的测试点；在测试数据生成与互测方面投入精力不足。</p>
+<p>经过本单元的练习，本人充分体会到了面向对象设计的好处，对 Java 语言的运用也更加熟练（例如 Java 容器的使用，容器的流 ( <code>stream</code> ) 式操作，<code>BigInteger</code> 类的运用，<code>Object</code> 类各方法的应用 ），但是由于几乎没有采用正则表达式，所以对 <code>Pattern</code> 和 <code>Matcher</code> 类的练习存在较为严重的缺乏。</p>
+<p>另外本人对待<strong>性能</strong>也没有投入足够的精力，在确保了正确性的基础上没有花大量的精力去思考如何优化性能，也没有去充分尝试讨论区各位<del>大佬</del>同学提出的优化思路，仅仅做了一些被动的化简（例如合并同类项等）和一个很生硬的 $\sin^2x+\cos^2x$ 模式的处理，没有做如因式分解&#x2F;因式展开等主动的优化。但是当看到大量的由于卷极致的性能优化从而强测中正确性翻车的例子后，本人还是认为架构和可扩展性才是面向对象设计的重点，即：不要为了一点点性能而在架构上开倒车。为了架构和可维护性优先，在初始版本的设计中甚至可以考虑留出适量的冗余（例如在递归下降解析器中直接写好 Wrong Format 判断而不是留到最后，<del>祭祖课设中提前为流水线留出一些可能的毒瘤数据通路</del> ）。当然，能够提前为未来的扩展”留好接口”也是需要一定的知识储备或经验积累的。</p>
+<p>最后希望接下来的 OO 作业能顺利完成（前提是保证身体）</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BUAA/" rel="tag"># BUAA</a>
+              <a href="/tags/OO/" rel="tag"># OO</a>
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/%E9%80%92%E5%BD%92%E4%B8%8B%E9%99%8D/" rel="tag"># 递归下降</a>
+              <a href="/tags/%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="tag"># 表达式</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/1970/01/01/hello-hexo/" rel="prev" title="Hello Hexo">
+                  <i class="fa fa-chevron-left"></i> Hello Hexo
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/04/21/oo-elevator-2021/" rel="next" title="BUAA OO 第二单元（电梯） 总结博客">
+                  BUAA OO 第二单元（电梯） 总结博客 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dhy2000</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

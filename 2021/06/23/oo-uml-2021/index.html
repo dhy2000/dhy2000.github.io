@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"dhy2000.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="UML 类图&#x2F;顺序图&#x2F;状态图信息查询与错误检测">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BUAA OO 第四单元（ UML 解析器 ）与课程总结">
+<meta property="og:url" content="http://dhy2000.github.io/2021/06/23/oo-uml-2021/index.html">
+<meta property="og:site_name" content="dhy2000&#39;s blog">
+<meta property="og:description" content="UML 类图&#x2F;顺序图&#x2F;状态图信息查询与错误检测">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://dhy2000.github.io/oo-uml-2021/hw13_14.png">
+<meta property="og:image" content="http://dhy2000.github.io/oo-uml-2021/hw15.png">
+<meta property="article:published_time" content="2021-06-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-22T16:00:00.000Z">
+<meta property="article:author" content="dhy2000">
+<meta property="article:tag" content="BUAA">
+<meta property="article:tag" content="OO">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="UML">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://dhy2000.github.io/oo-uml-2021/hw13_14.png">
+
+
+<link rel="canonical" href="http://dhy2000.github.io/2021/06/23/oo-uml-2021/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://dhy2000.github.io/2021/06/23/oo-uml-2021/","path":"2021/06/23/oo-uml-2021/","title":"BUAA OO 第四单元（ UML 解析器 ）与课程总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>BUAA OO 第四单元（ UML 解析器 ）与课程总结 | dhy2000's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">dhy2000's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%AC%AC%E5%9B%9B%E5%8D%95%E5%85%83%E4%BD%9C%E4%B8%9A%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">一、第四单元作业架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC-13%E3%80%8114-%E6%AC%A1%E4%BD%9C%E4%B8%9A"><span class="nav-number">1.1.</span> <span class="nav-text">第 13、14 次作业</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC-15-%E6%AC%A1%E4%BD%9C%E4%B8%9A"><span class="nav-number">1.2.</span> <span class="nav-text">第 15 次作业</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%9B%9B%E4%B8%AA%E5%8D%95%E5%85%83%E4%B8%AD%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%8F%8A-OO-%E6%96%B9%E6%B3%95%E7%90%86%E8%A7%A3%E7%9A%84%E6%BC%94%E8%BF%9B"><span class="nav-number">2.</span> <span class="nav-text">二、四个单元中架构设计及 OO 方法理解的演进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%9B%9B%E4%B8%AA%E5%8D%95%E5%85%83%E4%B8%AD%E6%B5%8B%E8%AF%95%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E8%B7%B5%E7%9A%84%E6%BC%94%E8%BF%9B"><span class="nav-number">3.</span> <span class="nav-text">三、四个单元中测试理解与实践的演进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E8%AF%BE%E7%A8%8B%E6%94%B6%E8%8E%B7"><span class="nav-number">4.</span> <span class="nav-text">四、课程收获</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%AF%B9%E8%AF%BE%E7%A8%8B%E7%9A%84%E5%BB%BA%E8%AE%AE"><span class="nav-number">5.</span> <span class="nav-text">五、对课程的建议</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">dhy2000</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://dhy2000.github.io/2021/06/23/oo-uml-2021/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="dhy2000">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="dhy2000's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="BUAA OO 第四单元（ UML 解析器 ）与课程总结 | dhy2000's blog">
+      <meta itemprop="description" content="UML 类图/顺序图/状态图信息查询与错误检测">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BUAA OO 第四单元（ UML 解析器 ）与课程总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-23 00:00:00" itemprop="dateCreated datePublished" datetime="2021-06-23T00:00:00+08:00">2021-06-23</time>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">UML 类图/顺序图/状态图信息查询与错误检测</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>一学期的 OO 终于结课啦！</p>
+<h2 id="一、第四单元作业架构设计"><a href="#一、第四单元作业架构设计" class="headerlink" title="一、第四单元作业架构设计"></a>一、第四单元作业架构设计</h2><p>第四单元整体是要求我们实现一个 UML 解析器。三次作业分别要求我们实现对类图的解析，对顺序图和状态图的解析，对一些条规则进行合法性检查。这一单元与上一个单元类似，解析器程序的大部分（ json 解析，输入命令解析等）均已经由官方包实现，自己只需要实现要求的几个查询接口并实现相应的查询方法即可。</p>
+<p>由于本单元对性能没有过多要求（ UML 模型中不超过 400 个元素，查询指令不超过 300 条，并且后两次作业的 CPU 时间均给了 10 秒），不太需要像上一单元一样过多关注性能优化。因此本人仅采用最简单的架构与最为暴力的算法来实现作业要求。</p>
+<h3 id="第-13、14-次作业"><a href="#第-13、14-次作业" class="headerlink" title="第 13、14 次作业"></a>第 13、14 次作业</h3><p><img src="/oo-uml-2021/hw13_14.png" alt="hw13_14"></p>
+<p>架构非常简单，也并未继承官方包中给的 UML 对象类进行建图等操作，只是直接将构造方法中给出的 elements 存储为 <code>HashMap</code> 。虽然没有进行建图，但仍然进行了对继承关系的预处理，将类和接口的继承关系提前建立 <code>Map</code> 存储起来。</p>
+<p>在查询方法中大量地使用 <code>stream</code> 操作来根据要求进行查询 （ 在不考虑性能的前提下， <code>stream</code> 真香 ）。下面举一个简单的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假设已经用 Map 存储了所有元素的信息(元素 id 和元素对象本身对应)</span></span><br><span class="line"><span class="keyword">private</span> Map&lt;String, UmlElement&gt; elements;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取得状态 state 经过一步转移能到达的所有状态的名称</span></span><br><span class="line"><span class="comment">// UmlState state;</span></span><br><span class="line">List&lt;String&gt; subsequence = elements.values().stream()</span><br><span class="line">    .filter(umlElement -&gt; umlElement <span class="keyword">instanceof</span> UmlTransition)</span><br><span class="line">    .map(umlElement -&gt; (UmlTransition) umlElement)</span><br><span class="line">    .filter(umlTransition -&gt; umlTransition.getSource().equals(state.getId()))</span><br><span class="line">    .map(umlTransition -&gt; umlTransition.getTarget())</span><br><span class="line">    .map(id -&gt; elements.get(id)).map(UmlElement::getName)</span><br><span class="line">    .collect(Collectors.toList());</span><br></pre></td></tr></table></figure>
+
+<p>上面的例子简要展示了仅通过一系列 <code>stream</code> 操作而没有继承 <code>UmlClass</code> 等类进行建图的前提下实现了 UML 解析器的相应查询（例子较为简陋，未考虑错误处理）</p>
+<p><code>MyUmlHelper</code> 类：将一些查询过程中可能被多个方法复用的代码拆分成辅助用的方法（例如，根据类名取出类在 UML 模型中对应的元素对象(并能够抛出类不存在&#x2F;类重名异常)，取出某个类的所有方法&#x2F;属性，取出类的继承链，根据变量类型对象 <code>NamableType</code> 的具体种类提取出类型名等）。本来打算一个 <code>MyUmlInteraction</code> 一类到底的，但是由于代码行数超过了 500 行，违反了 checkstyle 的要求所以将辅助用的方法单独拆分成类。</p>
+<p>第 14 次作业的顶层结构与第 13 次作业完全相同，未新增新的类，只是添加了相应的查询方法。</p>
+<h3 id="第-15-次作业"><a href="#第-15-次作业" class="headerlink" title="第 15 次作业"></a>第 15 次作业</h3><p>在这次作业中新增了 UML 模型的合法性检查。</p>
+<p><img src="/oo-uml-2021/hw15.png" alt="hw15"></p>
+<p>同理，由于 <code>MyUmlInteraction</code> 与 <code>MyUmlHelper</code> 两个类均超过 300 行且接近 400 行，为了保证满足 checkstyle 的 500 行以内的要求，将八个查询方法单独拆分成 <code>MyUmlChecker</code> 类。</p>
+<p>另外，由于 <code>R002</code> (禁止循环继承) 与 <code>R003</code> (禁止重复继承) 均涉及到了与图相关的操作（ R003 采用 BFS，R002 采用 Tarjan 强联通分量算法），故不得不先建立继承关系的有向图。这里采用了一个功能相对专一的容器类，以 UML 元素的 id 建立继承关系图，并实现了相应的搜索算法。</p>
+<p>（由于架构实在过于简单所以写了很多文字凑一下字数…）</p>
+<h2 id="二、四个单元中架构设计及-OO-方法理解的演进"><a href="#二、四个单元中架构设计及-OO-方法理解的演进" class="headerlink" title="二、四个单元中架构设计及 OO 方法理解的演进"></a>二、四个单元中架构设计及 OO 方法理解的演进</h2><p>第一单元：这一单元主要研究的对象是表达式，由于考虑到需要对表达式进行解析，并且在去年的数据结构中也学习过表达式树，因此较为自然地想到了采用树形结构来存储表达式，根据表达式中成分的层次来设计对象的层次，每个对象对应着一个表达式成分，对象的行为对应表达式的行为。同时在解析表达式方面根据指导书给的文法形式化定义采用层次特点十分明显的递归下降分析法来解析表达式。而对于求导、合并等具有共性的方法则将其抽象出来(成为接口，表达式成分分别实现这些接口)。这一架构的可扩展性十分良好，在三次作业中均未重构，同时递归下降分析法在错误格式处理上具有较好的健壮性。</p>
+<p>第二单元：多线程程序设计，难点在于不同对象之间的协作，对共享数据的访问控制等。这一单元相比第一单元引入了更多的设计模式（也许是由于多线程），例如生产者-消费者模式，状态模式，策略模式等。多线程相关的坑(不知道算不算”架构设计”)也是这一单元需要重点关注的，例如对共享数据的线程安全访问，避免死锁，利用等待唤醒机制防止轮询等。（在多线程方面， Java 中已经有很多封装好的对象，如 <code>BlockingQueue</code> , <code>Semaphore</code>, <code>ReentrantLock</code>, 等，善用它们可以规避很多线程安全的坑，从而将更多精力用在电梯的调度策略上。 <del>妈妈再也不用担心电梯吃人生孩子了。</del> </p>
+<p>第三单元：从这一单元开始架构设计相比前两个单元难度降低了，这一单元是根据 JML 规格实现社交网络模拟，整体的架构（需要实现哪些类、哪些方法）都是由官方接口及其 JML 规格规定好的。需要自己设计的部分主要是容器的选择以及对时间复杂度的控制。（ JML 规格只是规定了程序的行为需要与规格一致，但并未规定采用的实现方式。例如规格中出现了数组，但实现起来并不一定要用数组，而可能采用 <code>Map</code> 等容器；规格中出现了嵌套的 <code>\forall</code>, <code>\exists</code>, <code>\sum</code> 等 “循环” 并不意味着实现也要是嵌套循环）</p>
+<p>第四单元：这一单元在架构设计上似乎没什么可说的，就是要理解 UML 图及其元素的含义，以及将官方包中相应的对象与 UML 模型中的元素对应起来。（也可能只是因为自己的设计过于简陋，没有根据 UMLElement 之间的关系自己建图）</p>
+<h2 id="三、四个单元中测试理解与实践的演进"><a href="#三、四个单元中测试理解与实践的演进" class="headerlink" title="三、四个单元中测试理解与实践的演进"></a>三、四个单元中测试理解与实践的演进</h2><p>第一单元：以自动测试为主，由于当时刚刚开学，时间较为充裕，故花了大量的时间编写自己的数据生成器和自动评测机。但是数据生成器强度较弱，并且评测机的正确性检查部分未检查格式，因此单靠自己的测试无法规避第三次作业中可能输出 <code>sin(x*x)</code> 的错误情况，仅测出了部分三角函数优化的 bug 。</p>
+<p>第二单元：未搭建数据生成器与自动评测机，仅建立了一套简陋的定时输入发射器用于处理电梯的输入。本地测试数据全部为手工生成。由于自己的电梯采取的是自由竞争的策略，没有进行刻意的优化，并且全程采用线程安全容器，因此几乎未发生线程安全相关的错误。本地测试的重点主要针对导致 CPU TLE 的元凶 “暴力轮询”（往往在不经意间就发生了），手工构造的测试数据也大多为若干波请求中间隔有空窗期的模式来测试是否发生轮询。</p>
+<p>第三、四单元：由于这两个单元细节特别多并且有唯一的正确答案，因此测试方案以多人对拍为主，手动构造边界样例为辅。对于第三单元，手工构造的测试用例主要针对若干性能瓶颈的方法，通过极端数据测试是否发生 TLE 。而第四单元构造数据则着眼于各种正确的、错误的、边界的可能情况，由于不需要考虑性能所以想到的每种情况均只需构造 1 组数据测试行为是否正确即可。</p>
+<h2 id="四、课程收获"><a href="#四、课程收获" class="headerlink" title="四、课程收获"></a>四、课程收获</h2><p>预习阶段：</p>
+<ul>
+<li>巩固了一些 Java 语法<ul>
+<li>容器的使用</li>
+<li><code>stream</code> （感谢 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/roife/">roife</a> 的有关 <code>stream</code> 的分享）</li>
+<li>异常处理</li>
+<li>正则表达式</li>
+</ul>
+</li>
+<li>体会了面向对象思想之封装</li>
+</ul>
+<p>第一单元：</p>
+<ul>
+<li>根据层次设计类、抽象类、接口及其继承&#x2F;实现关系</li>
+<li>递归下降分析法</li>
+<li>工厂模式</li>
+<li>用计算机实现在数学中早已习以为常的表达式优化</li>
+<li>“圈复杂度” 等衡量面向对象程序的指标</li>
+</ul>
+<p>第二单元：</p>
+<ul>
+<li>多线程程序的设计</li>
+<li>Java 中多线程相关库的使用<ul>
+<li>同步互斥 <code>synchronized</code> 与等待唤醒 <code>wait/notify</code></li>
+<li>线程安全容器 <code>BlockingQueue</code> ，<code>ConcurrentHashMap</code> 等</li>
+<li>可重入锁 <code>ReentrantLock</code></li>
+<li>信号量 <code>Semaphore</code></li>
+</ul>
+</li>
+<li>提升多线程程序的性能<ul>
+<li>减少 “轮询” 对 CPU 资源的浪费</li>
+</ul>
+</li>
+</ul>
+<p>第三单元：</p>
+<ul>
+<li>JML 语法，理解 JML 规格</li>
+<li>提升程序性能，减少算法时间复杂度<ul>
+<li>根据需求选择对性能最有利的容器</li>
+<li>空间换时间，记忆化结果防止重复计算</li>
+<li>复习了图最短路算法</li>
+</ul>
+</li>
+</ul>
+<p>第四单元：</p>
+<ul>
+<li>理解了 UML 的含义</li>
+<li>增强了理解谜语人指导书的能力</li>
+</ul>
+<p>工具：</p>
+<ul>
+<li><code>Intellj IDEA</code> 集成开发环境<ul>
+<li>代码风格检查插件 <code>checkstyle</code></li>
+</ul>
+</li>
+<li>版本管理工具 <code>git</code> 及代码托管仓库 <code>gitlab</code> 的使用</li>
+<li>性能分析工具 <code>JProfiler</code></li>
+<li>单元测试库 <code>JUnit</code></li>
+</ul>
+<h2 id="五、对课程的建议"><a href="#五、对课程的建议" class="headerlink" title="五、对课程的建议"></a>五、对课程的建议</h2><ol>
+<li>在每单元的第一次作业前发放一些补充的预习资料（例如在第一单元前(寒假)补充递归下降分析法，第二单元前补充多线程编程以及相关库的使用等，第三、四单元分别提前一周发放 JML 与 UML 的相关资料），从而减少每单元第一次作业时由于对相关的背景知识不熟悉造成的跨度大和痛苦。</li>
+<li>对于指导书中的 “谜语人” 之处（即需求描述不清，有歧义之处）希望可以描述得更明确一些，尤其是 UML 这细节特别多的单元。<del>刻意增大指导书的理解难度让学生去 “猜需求” 除了浪费时间以外恐怕也没什么收获。</del> </li>
+<li>适当降低前两个单元的性能分占比，让感兴趣且学有余力的同学去尽情优化性能（保留性能相关的奖，或者性能优秀者额外加分），但是不要让性能以及性能分带来的 “卷” 给很多同学们带来焦虑。</li>
+<li>希望实验课能够有评测反馈，课后保留指导书并提供参考答案。（否则实验课没什么收获，没有评测反馈也没有参考答案始终感觉不明不白）如果实验课承载着某种考核&#x2F;考试目的的话，可以在实验课结束后公布评测结果&#x2F;参考答案。</li>
+<li>每单元公开一些同学的优秀代码供大家参考学习（据说去年有这个环节但是今年没了）。曾经在讨论区中有助教表示课程组不鼓励直接分享&#x2F;交流代码，但是对于一些值得学习的 best practice 放出来供大家学习(而不是抄袭)未尝不是坏事（对于基础差一些的同学来说，把思路转化为代码的过程还是很困难的，很有可能自学的方向完全歪了而不自知，也能过评测但是写法完完全全不优雅）。</li>
+<li>希望讨论区可以支持关键字检索或者标签功能，目前的讨论区如果内容多起来则找到某个特定的前人问过的问题（例如关于某个方法或者某个异常的问题）是很低效的。另外希望能有一个公共的讨论区（整个课程总体、每个单元总体）用来进行不针对某次特定作业的通用讨论，如关于 Java 语法 &#x2F; git 使用 &#x2F; IDEA 使用等主题。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BUAA/" rel="tag"># BUAA</a>
+              <a href="/tags/OO/" rel="tag"># OO</a>
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/UML/" rel="tag"># UML</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/27/oo-jml-2021/" rel="prev" title="BUAA OO 第三单元（ JML & 社交关系模拟） 博客总结">
+                  <i class="fa fa-chevron-left"></i> BUAA OO 第三单元（ JML & 社交关系模拟） 博客总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dhy2000</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

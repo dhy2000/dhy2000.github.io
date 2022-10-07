@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"dhy2000.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="JML 规格化设计，社交网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BUAA OO 第三单元（ JML &amp; 社交关系模拟） 博客总结">
+<meta property="og:url" content="http://dhy2000.github.io/2021/05/27/oo-jml-2021/index.html">
+<meta property="og:site_name" content="dhy2000&#39;s blog">
+<meta property="og:description" content="JML 规格化设计，社交网络">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-05-26T16:00:00.000Z">
+<meta property="article:author" content="dhy2000">
+<meta property="article:tag" content="BUAA">
+<meta property="article:tag" content="OO">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://dhy2000.github.io/2021/05/27/oo-jml-2021/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://dhy2000.github.io/2021/05/27/oo-jml-2021/","path":"2021/05/27/oo-jml-2021/","title":"BUAA OO 第三单元（ JML & 社交关系模拟） 博客总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>BUAA OO 第三单元（ JML & 社交关系模拟） 博客总结 | dhy2000's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">dhy2000's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%9E%E7%8E%B0%E8%A7%84%E6%A0%BC%E6%89%80%E9%87%87%E5%8F%96%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%AD%96%E7%95%A5"><span class="nav-number">1.</span> <span class="nav-text">(1) 实现规格所采取的设计策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%9F%BA%E4%BA%8E-JML-%E8%A7%84%E6%A0%BC%E6%9D%A5%E8%AE%BE%E8%AE%A1%E6%B5%8B%E8%AF%95%E7%9A%84%E6%96%B9%E6%B3%95%E5%92%8C%E7%AD%96%E7%95%A5"><span class="nav-number">2.</span> <span class="nav-text">(2) 基于 JML 规格来设计测试的方法和策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%AE%B9%E5%99%A8%E7%9A%84%E9%80%89%E6%8B%A9%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">(3) 容器的选择和使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Person"><span class="nav-number">3.1.</span> <span class="nav-text">Person</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Group"><span class="nav-number">3.2.</span> <span class="nav-text">Group</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Network"><span class="nav-number">3.3.</span> <span class="nav-text">Network</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B6%E6%9F%A5%E9%9B%86"><span class="nav-number">3.4.</span> <span class="nav-text">并查集</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">(4) 性能问题分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E4%BD%9C%E4%B8%9A%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90"><span class="nav-number">5.</span> <span class="nav-text">(5) 作业架构分析</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">dhy2000</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://dhy2000.github.io/2021/05/27/oo-jml-2021/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="dhy2000">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="dhy2000's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="BUAA OO 第三单元（ JML & 社交关系模拟） 博客总结 | dhy2000's blog">
+      <meta itemprop="description" content="JML 规格化设计，社交网络">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BUAA OO 第三单元（ JML & 社交关系模拟） 博客总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-27 00:00:00" itemprop="dateCreated datePublished" datetime="2021-05-27T00:00:00+08:00">2021-05-27</time>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">JML 规格化设计，社交网络</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="1-实现规格所采取的设计策略"><a href="#1-实现规格所采取的设计策略" class="headerlink" title="(1) 实现规格所采取的设计策略"></a>(1) 实现规格所采取的设计策略</h2><p>这部分似乎没有太多特别的，总体上来说分为这样几个步骤：</p>
+<ol>
+<li>先阅读指导书和接口的定义，从宏观的角度了解要求实现的是什么；</li>
+<li>阅读接口的整体规格，并重点关注接口开头的 <code>public instance model ......</code> 部分（通常该部分提示着这个对象需要维护哪些数据）</li>
+<li>从小（ <code>Person</code>, <code>Message</code> 等结构较简单，维护的数据较少的类）到大（ <code>Group</code>, <code>Network</code> 结构复杂，维护的数据和含有的方法较多的类）进一步阅读方法的规格，在这一步考虑采用何种<strong>容器</strong>或<strong>数据结构</strong>来存储这些数据。</li>
+<li>详细阅读方法规格，依次实现方法。</li>
+</ol>
+<h2 id="2-基于-JML-规格来设计测试的方法和策略"><a href="#2-基于-JML-规格来设计测试的方法和策略" class="headerlink" title="(2) 基于 JML 规格来设计测试的方法和策略"></a>(2) 基于 JML 规格来设计测试的方法和策略</h2><p>自己对于本单元的测试采用了对拍与黑盒为主，JUnit 为辅的测试策略。采用 JUnit 对自己感到不太把握的方法进行了较为基础的功能性弱测，测试了 qnr, qgvs, sim 方法，但并未对整个程序进行全面的单元测试。本地的黑盒测试主要针对了下述性能分析栏目中较容易 TLE 的方法，有针对性地手动构造了少量性能的极端测试点，验证了自己的实现并没有 TLE 。除此以外就是对拍，将自己程序的输出与其他人程序的输出进行比对以确保自己没有出现较严重的实现偏差甚至对规格理解的偏差。</p>
+<h2 id="3-容器的选择和使用"><a href="#3-容器的选择和使用" class="headerlink" title="(3) 容器的选择和使用"></a>(3) 容器的选择和使用</h2><p>在本次作业中自己主要采用了 <code>HashMap</code> ，<code>HashSet</code> 以及 <code>LinkedList</code> 容器。下面具体列出实现中采用的容器以及如此选择容器的依据。</p>
+<h3 id="Person"><a href="#Person" class="headerlink" title="Person"></a>Person</h3><ul>
+<li><code>HashMap: &lt;acquaint, value&gt;</code> ，用来储存一个人的有关系的人以及这些关系的 <code>value</code> <ul>
+<li><code>acquaint</code> 和 <code>value</code> 存在一一对应关系，故选用 <code>Map</code>.</li>
+</ul>
+</li>
+<li><code>HashSet: &lt;group&gt;</code> ，储存一个人所属的 Group。<ul>
+<li>对于一个人只需知道它属于哪些 Group，主要关注”有没有”而与顺序无关，故选用 <code>Set</code> 。</li>
+</ul>
+</li>
+<li><code>LinkedList: &lt;Message&gt;</code> ，储存一个人接收到的 Message。<ul>
+<li>由于 <code>getReceivedMessages</code> 方法以及 <code>Network</code> 中 <code>sendMessage</code> 方法的规格对 <code>messages</code> 的顺序有要求，故采用 <code>List</code> 进行存储；又由于 <code>sendMessage</code> 对 <code>messages</code> 进行的是头插操作，且没有涉及到对这个 <code>List</code> 的按下标访问，故相较于 <code>ArrayList</code> 而言选用了更适合头插与顺序遍历的 <code>LinkedList</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="Group"><a href="#Group" class="headerlink" title="Group"></a>Group</h3><ul>
+<li><code>HashMap: &lt;Person.id, Person&gt;</code> ，储存该 group 内含有的人。<ul>
+<li>这里选用了 <code>Map</code> 而非 <code>Set&lt;Person&gt;</code> 是出于考虑到我们实现的 <code>Network</code> 需要大量的根据 <code>id</code> 查询到某个实体（人&#x2F;组&#x2F;消息）的操作，所以将 id 和实体建立 <code>Map</code> 以便于查询。</li>
+</ul>
+</li>
+<li><code>HashSet: &lt;Edge&gt;</code> ，储存该 Group 中所有的边。<ul>
+<li>用于 <code>qgvs</code> 操作。</li>
+</ul>
+</li>
+</ul>
+<h3 id="Network"><a href="#Network" class="headerlink" title="Network"></a>Network</h3><ul>
+<li><code>HashMap: &lt;Person.id, Person&gt;</code> </li>
+<li><code>HashMap: &lt;Message.id, Message&gt;</code> </li>
+<li><code>HashMap: &lt;Group.id, Group&gt;</code> </li>
+<li><code>HashMap: &lt;Emoji.id, Emoji.heat&gt;</code> ，用于存储该 Network 中含有的表情以及表情对应的热度。</li>
+</ul>
+<h3 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h3><ul>
+<li>采用了一个 <code>HashMap</code> 来储存每个对象的直接 <code>father</code> ，相较于 C 中传统的数组写法更加灵活。</li>
+</ul>
+<h2 id="4-性能问题分析"><a href="#4-性能问题分析" class="headerlink" title="(4) 性能问题分析"></a>(4) 性能问题分析</h2><p>本部分简要列举容易出现性能问题的方法以及避免 TLE 的策略。</p>
+<ul>
+<li><p><code>isCircle</code> (qci)： 该方法实际意义为判断无向图上的两个节点是否连通，可采用并查集来实现。</p>
+<p>（稍微吐槽一下方法名）</p>
+</li>
+<li><p><code>queryBlockSum</code> (qbs)：求无向图中连通块的数量，和 <code>isCircle</code> 方法一样，采用并查集实现。（亦可采用单次 $O(n)$ 的 DFS&#x2F;BFS 实现）</p>
+</li>
+<li><p><code>getAgeMean</code> &#x2F; <code>getAgeVar</code> (qgam&#x2F;qgav)：求一个 Group （Group 意义为无向图的一个子图）中所有人的年龄的均值与方差。这两个方法可以采用较为朴素的 $O(n)$ 方法实现，直接遍历该 Group 中所有的 Person；如果希望在这里卷性能(bushi)，可以在 Group 中添加两个变量来维护组内 Person 年龄之和与平方和，从而将这两个方法的复杂度降为 $O(1)$ </p>
+</li>
+<li><p><code>getValueSum</code> (qgvs)： 求一个 Group 中所有边的边权之和。对于该方法如果直接按照规格去对组内的 Person 进行二重循环遍历并两两判断是否有边，则单次执行该方法时间复杂度为 $O(n^2)$ ，如果强测数据中有大量的 qgvs 指令则总体复杂度为 $O(n^3)$ 可能发生 CTLE 。一种可能的实现方法是采用一个变量来记录当前 Group 中所有边的边权之和，在对该组 <code>addPerson</code> 与 <code>delPerson</code> ，以及对组内的人进行 <code>addRelation</code> 时对边权和进行维护，使得 <code>getValueSum</code> 方法本身的复杂度为 $O(1)$ ，而 <code>addPerson</code> 与 <code>delPerson</code> 的复杂度分别为 $O(n)$ 与 $O(E)$ （$E$ 为图的边数）则总体的复杂度为 $O(n^2)$  ，可以满足性能要求。</p>
+</li>
+<li><p><code>sendIndirectMessage</code> (sim)：该方法的返回值是两个人之间的最短路，需采用 Dijkstra 算法对无向图中的单源最短路进行求解。注意使用 Dijkstra 时需要采用堆优化。</p>
+</li>
+</ul>
+<p>最后来点题外话 &amp;&amp; Tips：如果一个方法的规格中出现了嵌套的量化表达式（即 <code>\exists</code> , <code>\forall</code> 等用于描述一定范围元素的量词），如果完全照翻规格（没有选用合适的容器也没有分析这段规格的含义）可能会写出时间复杂度 $O(n^2)$ 的双重循环时就需要小心了，这时需要理解规格并选用合适的数据结构与算法来实现。</p>
+<h2 id="5-作业架构分析"><a href="#5-作业架构分析" class="headerlink" title="(5) 作业架构分析"></a>(5) 作业架构分析</h2><p>本次作业在架构上不太需要我们实现者去过多考虑，所需要的类的数量以及实现哪些方法均是由规格给出的。在作业的实现中主要是考虑数据之间的关系，合适容器的选用以及对于较复杂的方法保证性能满足要求。只有第三次作业中增加了三种不同的 Message 所以对特殊种类的 Message 继承自己实现的 <code>MyMessage</code> 类并且对 <code>getSocialValue</code> 方法进行了 override ，满足了面向对象的特性。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BUAA/" rel="tag"># BUAA</a>
+              <a href="/tags/OO/" rel="tag"># OO</a>
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/21/oo-elevator-2021/" rel="prev" title="BUAA OO 第二单元（电梯） 总结博客">
+                  <i class="fa fa-chevron-left"></i> BUAA OO 第二单元（电梯） 总结博客
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/06/23/oo-uml-2021/" rel="next" title="BUAA OO 第四单元（ UML 解析器 ）与课程总结">
+                  BUAA OO 第四单元（ UML 解析器 ）与课程总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dhy2000</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

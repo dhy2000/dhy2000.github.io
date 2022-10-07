@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"dhy2000.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="多线程电梯模拟">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BUAA OO 第二单元（电梯） 总结博客">
+<meta property="og:url" content="http://dhy2000.github.io/2021/04/21/oo-elevator-2021/index.html">
+<meta property="og:site_name" content="dhy2000&#39;s blog">
+<meta property="og:description" content="多线程电梯模拟">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://dhy2000.github.io/oo-elevator-2021/uml.png">
+<meta property="og:image" content="http://dhy2000.github.io/oo-elevator-2021/uml_ex.png">
+<meta property="og:image" content="http://dhy2000.github.io/oo-elevator-2021/uml_collaboration.png">
+<meta property="article:published_time" content="2021-04-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-20T16:00:00.000Z">
+<meta property="article:author" content="dhy2000">
+<meta property="article:tag" content="BUAA">
+<meta property="article:tag" content="OO">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="多线程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://dhy2000.github.io/oo-elevator-2021/uml.png">
+
+
+<link rel="canonical" href="http://dhy2000.github.io/2021/04/21/oo-elevator-2021/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://dhy2000.github.io/2021/04/21/oo-elevator-2021/","path":"2021/04/21/oo-elevator-2021/","title":"BUAA OO 第二单元（电梯） 总结博客"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>BUAA OO 第二单元（电梯） 总结博客 | dhy2000's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">dhy2000's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%90%8C%E6%AD%A5%E5%9D%97%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E9%94%81%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-number">1.</span> <span class="nav-text">一、同步块的设置和锁的选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E6%AC%A1%E4%BD%9C%E4%B8%9A"><span class="nav-number">1.1.</span> <span class="nav-text">第五次作业</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E6%AC%A1%E4%BD%9C%E4%B8%9A"><span class="nav-number">1.2.</span> <span class="nav-text">第六次作业</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E8%BE%93%E5%87%BA"><span class="nav-number">1.2.1.</span> <span class="nav-text">同步输出</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%83%E6%AC%A1%E4%BD%9C%E4%B8%9A"><span class="nav-number">1.3.</span> <span class="nav-text">第七次作业</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%80%99%E4%B9%98%E8%A1%A8"><span class="nav-number">1.3.1.</span> <span class="nav-text">候乘表</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%B0%83%E5%BA%A6%E5%99%A8%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">二、调度器设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BD%9C%E4%B8%9A%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7"><span class="nav-number">3.</span> <span class="nav-text">三、第三次作业架构与可扩展性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E8%87%AA%E5%B7%B1%E7%A8%8B%E5%BA%8F%E7%9A%84-Bug"><span class="nav-number">4.</span> <span class="nav-text">四、自己程序的 Bug</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E6%AC%A1%E4%BD%9C%E4%B8%9A-1"><span class="nav-number">4.1.</span> <span class="nav-text">第五次作业</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CTLE%E4%B9%8BLOOK%E8%BD%AC%E5%90%91%E8%BD%AE%E8%AF%A2"><span class="nav-number">4.1.1.</span> <span class="nav-text">CTLE之LOOK转向轮询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RTLE%E4%B9%8B%E7%94%B5%E6%A2%AF%E6%97%A0%E9%99%90%E7%AD%89%E5%BE%85"><span class="nav-number">4.1.2.</span> <span class="nav-text">RTLE之电梯无限等待</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WA%E4%B9%8B%E7%94%B5%E6%A2%AF%E5%BC%80%E5%85%B3%E9%97%A8%E8%BF%87%E5%BF%AB"><span class="nav-number">4.1.3.</span> <span class="nav-text">WA之电梯开关门过快</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E6%AC%A1%E4%BD%9C%E4%B8%9A-1"><span class="nav-number">4.2.</span> <span class="nav-text">第六次作业</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%83%E6%AC%A1%E4%BD%9C%E4%B8%9A-1"><span class="nav-number">4.3.</span> <span class="nav-text">第七次作业</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%88%E8%BD%AE%E8%AF%A2%E4%BA%86"><span class="nav-number">4.3.1.</span> <span class="nav-text">又轮询了</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%8F%91%E7%8E%B0%E5%88%AB%E4%BA%BA-Bug-%E9%87%87%E7%94%A8%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">五、发现别人 Bug 采用的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%AD%96%E7%95%A5"><span class="nav-number">5.1.</span> <span class="nav-text">测试策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%AD%96%E7%95%A5%E6%9C%89%E6%95%88%E6%80%A7"><span class="nav-number">5.1.1.</span> <span class="nav-text">测试策略有效性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E7%8E%B0%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98%E7%9A%84%E7%AD%96%E7%95%A5"><span class="nav-number">5.2.</span> <span class="nav-text">发现线程安全相关问题的策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%AD%96%E7%95%A5%E4%B8%8E%E7%AC%AC%E4%B8%80%E5%8D%95%E5%85%83%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="nav-number">5.3.</span> <span class="nav-text">测试策略与第一单元的差异</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%BF%83%E5%BE%97%E4%BD%93%E4%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">六、心得体会</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="nav-number">6.1.</span> <span class="nav-text">线程安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%82%E6%AC%A1%E5%8C%96%E8%AE%BE%E8%AE%A1"><span class="nav-number">6.2.</span> <span class="nav-text">层次化设计</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">dhy2000</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://dhy2000.github.io/2021/04/21/oo-elevator-2021/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="dhy2000">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="dhy2000's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="BUAA OO 第二单元（电梯） 总结博客 | dhy2000's blog">
+      <meta itemprop="description" content="多线程电梯模拟">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BUAA OO 第二单元（电梯） 总结博客
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-21 00:00:00" itemprop="dateCreated datePublished" datetime="2021-04-21T00:00:00+08:00">2021-04-21</time>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">多线程电梯模拟</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="一、同步块的设置和锁的选择"><a href="#一、同步块的设置和锁的选择" class="headerlink" title="一、同步块的设置和锁的选择"></a>一、同步块的设置和锁的选择</h2><h3 id="第五次作业"><a href="#第五次作业" class="headerlink" title="第五次作业"></a>第五次作业</h3><p>在本次作业中，我没有采用任何 <code>synchronized</code> 块。对于线程之间的共享数据对象采用了阻塞队列（ <code>BlockingQueue</code> ）作为存储乘客请求的容器，该容器已经保证了线程安全并且在没有内容时会阻塞等待(从而避免暴力轮询)，所以并不需要自己写同步块和锁。</p>
+<h3 id="第六次作业"><a href="#第六次作业" class="headerlink" title="第六次作业"></a>第六次作业</h3><h4 id="同步输出"><a href="#同步输出" class="headerlink" title="同步输出"></a>同步输出</h4><p>本次作业中由于包含了多部电梯，可能出现多部电梯在某个时刻同时输出的情况。官方包给出的输出方法 <code>TimableOutput.println</code> 在被调用时会获取当前的相对时间戳并拼接到字符串上输出，其不是原子操作，如多部电梯同时调用但不加任何同步措施，则可能会出现这样的执行顺序：</p>
+<pre><code>[电梯1-获取时间戳]-[电梯2-获取时间戳]-[电梯2-输出]-[电梯1-输出]
+</code></pre>
+<p>从而导致输出结果可能不是按时间戳严格非递减的：</p>
+<pre><code>[   1.1000]ARRIVE-2-1
+[   1.1010]ARRIVE-2-2
+[   1.5010]ARRIVE-3-2
+[   1.5000]ARRIVE-3-1
+</code></pre>
+<p>因此需要对官方的输出方法进行同步：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="type">long</span> <span class="title function_">println</span><span class="params">(String message)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> TimableOutput.println(message);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>电梯在输出信息时采用同步封装后的 <code>println</code> 方法代替直接调用官方包的 <code>println</code> 方法。</p>
+<h3 id="第七次作业"><a href="#第七次作业" class="headerlink" title="第七次作业"></a>第七次作业</h3><h4 id="候乘表"><a href="#候乘表" class="headerlink" title="候乘表"></a>候乘表</h4><p>在第七次作业中由于不同电梯可到达的楼层不同，对于不同的电梯，其可以运载&#x2F;捎带的请求也是不同的。由于我的作业采用了电梯自由竞争请求的策略（即指导书中的 “集中式” 调度策略），在该策略下所有电梯共享同一个候乘表，所以第六次作业采用 <code>BlockingQueue</code> 的设计不再适用了（队列首的请求不一定能被某些电梯运载），因此我参考了 <code>ArrayBlockingQueue</code> (结构较为简单, 插入删除共用一把锁)中关于加锁的部分实现，重新设计了候乘表对象，采用 <code>ReentrantLock</code> 实现了加锁逻辑。<br>在候乘表对象的读写方法中，同步块的设计未采用 <code>synchronized</code> 关键字，而是通过 <code>ReentrantLock</code> 的 <code>lock</code> 方法与 <code>unlock</code> 方法手动打造了同步临界区：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> ReentrantLock mutex; <span class="comment">// 类属性</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法内部</span></span><br><span class="line">mutex.lock();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// read and write something</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    mutex.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在线程(电梯或者请求处理器)读写候乘表时，通过 <code>lock</code> 方法获得锁，而后对候乘表进行读写（取出请求&#x2F;插入请求&#x2F;查询候乘请求个数等），完成读写后释放锁，在 <code>lock</code> 与 <code>unlock</code> （即 <code>finally</code> 块）之间形成了临界区，只能有一个线程进入临界区对共享数据进行读写，保证了候乘表在线程间共享的线程安全性。</p>
+<h2 id="二、调度器设计"><a href="#二、调度器设计" class="headerlink" title="二、调度器设计"></a>二、调度器设计</h2><p>我的三次作业的调度器设计相似，故一并分析，不再分每次作业。</p>
+<p>在我的作业中有一个调度器，调度器负责接受从输入线程传来的请求，将其放入候乘表并对电梯进行通知（唤醒等待的电梯）；调度器的另一个功能是当输入结束后由调度器负责适时(即电梯执行完所有请求后)给电梯发出停机指令，从而避免电梯陷入无限等待。电梯被调度器唤醒，但调度器不负责分派请求（请求放在楼层候乘表中由电梯进行自由竞争）。电梯与调度器之间通过信号量进行交互，电梯通过该信号量告知调度器已经完成的请求(个数)，调度器通过该信号量等待电梯完成所有请求，并向电梯发出停机指令。</p>
+<p>在第三次作业完成后，事后看来，我的调度器设计有一些 “假”，有一定的设计冗余并且可扩展性并没有想象的高，其起到的作用有些模糊，并且它所在的环节并未较好地支持更换调度策略，或者分派调度请求等。</p>
+<h2 id="三、第三次作业架构与可扩展性"><a href="#三、第三次作业架构与可扩展性" class="headerlink" title="三、第三次作业架构与可扩展性"></a>三、第三次作业架构与可扩展性</h2><p>我的第三次作业主要分为了电梯、楼层候乘表，请求处理器，输入线程等类，类的结构关系见 UML 图。</p>
+<p>我的架构设计重心主要放在了功能方面，对于性能没有过多设计（由于我采用的调度策略是让电梯自由竞争候乘表中的请求，所以基本没有在调度算法上花大工夫，强测结果也证明自由竞争在随机数据下的性能是比较优的）</p>
+<p>这次作业的可扩展性有好的地方，也有不太好的地方。对于电梯这个实体，有了第一单元的经验，我在这次作业中通过继承来实现不同的电梯，从第二次的同种电梯到第三次的不同种电梯的扩展较好，对支持更多种类的电梯效果也较好，只需从抽象的父类继承一个子类，在子类中设定好参数并重写相应的拆分换乘请求的方法。可扩展性不太好的方面主要包括调度策略难以实现多样化，并且难以从自由竞争修改成分派调度。</p>
+<p>UML类图：</p>
+<p><img src="/oo-elevator-2021/uml.png" alt="uml"></p>
+<p><img src="/oo-elevator-2021/uml_ex.png" alt="uml_ex"></p>
+<p>UML协作图：（由于主类不是线程，其仅负责启动上述线程而后就结束了，故未在图中体现）</p>
+<p><img src="/oo-elevator-2021/uml_collaboration.png" alt="uml_collaboration"></p>
+<h2 id="四、自己程序的-Bug"><a href="#四、自己程序的-Bug" class="headerlink" title="四、自己程序的 Bug"></a>四、自己程序的 Bug</h2><p>我的程序在三次强测与互测中均为出现 bug ，但在本地和中测测出了若干 bug 。</p>
+<h3 id="第五次作业-1"><a href="#第五次作业-1" class="headerlink" title="第五次作业"></a>第五次作业</h3><p>本次作业的 Bug 在公测的中测阶段根据评测结果反馈发现。</p>
+<h4 id="CTLE之LOOK转向轮询"><a href="#CTLE之LOOK转向轮询" class="headerlink" title="CTLE之LOOK转向轮询"></a>CTLE之LOOK转向轮询</h4><p>我的电梯采用了 LOOK 调度策略，由于对电梯转向的判定条件写得不严谨（电梯内没有乘客且运行同方向没有请求则转向），当两条请求之间隔了一段较长的 “空窗期” 时，电梯会因为<strong>候乘表中两个方向都无请求</strong>而<strong>不停转向</strong>，由于电梯的转向不耗时间，所以相当于电梯不断进行了<strong>轮询</strong>，大量占用 CPU 从而 CPU Time Limit Exceed.</p>
+<p>解决措施：在 LOOK 判定转向时加一个条件，当所有楼层候乘表中均没有请求时电梯应阻塞等待，及时释放 CPU。</p>
+<h4 id="RTLE之电梯无限等待"><a href="#RTLE之电梯无限等待" class="headerlink" title="RTLE之电梯无限等待"></a>RTLE之电梯无限等待</h4><p>该 bug 的产生是由于 de 上一个 bug 引起的。在请求空窗期内，电梯完成现有请求后阻塞等待，但新请求到来时电梯并未被及时唤醒，故后来的请求并没有被执行，而电梯仍然处于等待中。</p>
+<h4 id="WA之电梯开关门过快"><a href="#WA之电梯开关门过快" class="headerlink" title="WA之电梯开关门过快"></a>WA之电梯开关门过快</h4><p>背景：根据本次指导书的设定，乘客是”纸片人”，可以在开关门的窗口期内任意进出，如果开门和关门分别 sleep 0.2s ，而乘客在这两个 0.2s 之间上下，则会导致电梯开关门的窗口期多于 0.4s ，因此我在代码中采用了一种 “量子开关门” 的优化，即开门瞬间进行并<strong>记录下时间戳</strong>，而后进行乘客的上下，在关门时只需 sleep 一个<strong>时间差</strong>补足0.4s即可。</p>
+<p>在实现上述量子优化中，我的开门方法中存在如下代码段：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lastOpenTimeStamp = System.currentMillis(); <span class="comment">// record the time stamp of open door</span></span><br><span class="line">TimableOutput.println(<span class="string">&quot;OPEN-&quot;</span> + getFloor());</span><br></pre></td></tr></table></figure>
+
+<p>该代码段存在的 bug 与官方输出接口的线程不安全原理类似，如果上述两条语句不是连续执行，则会导致<strong>输出的开门时间戳晚于自己记录的时间戳</strong>，而在关门方法中计算 sleep 应补足的时间差是以 <code>lastOpenTimeStamp</code> 为基准，故输出结果中<strong>关门与开门之间相差小于 0.4s</strong> ，从而在中测中暴露出了 Wrong Answer.</p>
+<p>修复方法：实现”量子电梯”优化时，利用官方输出接口的<strong>返回值</strong>记录时间戳，而不要在自己的代码中调用 <code>System.currentMillis()</code> 。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lastOpenTimeStamp = TimableOutput.println(<span class="string">&quot;OPEN-&quot;</span> + getFloor());</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="第六次作业-1"><a href="#第六次作业-1" class="headerlink" title="第六次作业"></a>第六次作业</h3><p>本次作业在本地与公测的中测均未发现 BUG 。</p>
+<h3 id="第七次作业-1"><a href="#第七次作业-1" class="headerlink" title="第七次作业"></a>第七次作业</h3><h4 id="又轮询了"><a href="#又轮询了" class="headerlink" title="又轮询了"></a>又轮询了</h4><p>本次作业由于先前的队列式候乘表的设计不再适用于三种不同到达楼层的特种电梯进行自由竞争，故在刚完成第七次作业时出现了很多轮询：</p>
+<p>在原本的阻塞队列设计中，如果一个电梯从队首取出一条请求但并不能运载，则将该请求重新插入回队尾；但如果整个楼只有一条请求，则电梯会重复取出该请求并将其扔回队尾，无限执行该操作直到其他电梯赶到。</p>
+<p>解决方案：尝试在原有架构基础上进行修复，均失败，最终重构了候乘表类，将只能单端访问的 <code>BlockingQueue</code> 换成了可以随机存取的容器（我采用了 <code>HashSet</code> ，也可以采用 <code>LinkedList</code> 等），并采用 <code>ReentrantLock</code> 类自己加锁来确保线程安全。</p>
+<h2 id="五、发现别人-Bug-采用的方法"><a href="#五、发现别人-Bug-采用的方法" class="headerlink" title="五、发现别人 Bug 采用的方法"></a>五、发现别人 Bug 采用的方法</h2><h3 id="测试策略"><a href="#测试策略" class="headerlink" title="测试策略"></a>测试策略</h3><p>采用黑箱测试为主 + 手动构造样例为辅进行测试。</p>
+<p>手动构造的样例：来自于我在自测过程中卡出自己 bug 的样例或者用来测试自己性能的极端样例。</p>
+<p>黑箱测试：由于开始写电梯较晚导致没有时间写评测机了，故直接借用了<del>大佬</del>同学写的评测机进行黑箱测试。</p>
+<h4 id="测试策略有效性"><a href="#测试策略有效性" class="headerlink" title="测试策略有效性"></a>测试策略有效性</h4><p>由于是多线程，线程之间的执行顺序不确定，故有一些测试点卡出来的 bug 不太容易复现（例如数据线程安全或者一些死锁等）</p>
+<h3 id="发现线程安全相关问题的策略"><a href="#发现线程安全相关问题的策略" class="headerlink" title="发现线程安全相关问题的策略"></a>发现线程安全相关问题的策略</h3><p>我在互测中由于以黑箱测试为主，故并未针对某个人的特定的线程安全 bug 进行测试。在测试过程中多个人的程序并发运行，一定程度上提高了多线程 bug 被复现的概率。</p>
+<h3 id="测试策略与第一单元的差异"><a href="#测试策略与第一单元的差异" class="headerlink" title="测试策略与第一单元的差异"></a>测试策略与第一单元的差异</h3><p>本单元的测试策略与第一单元的差异一是题目本身的差异，要根据电梯的需求和数据特点构造测试样例，并且评测机的答案检查要考虑较多的错误情况；另一方面是要考虑到多线程，为了复现出多线程的 bug 可能需要一定的数据强度以及尽可能在高并发高压力环境下，且不保证复现成功率。</p>
+<h2 id="六、心得体会"><a href="#六、心得体会" class="headerlink" title="六、心得体会"></a>六、心得体会</h2><h3 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h3><p>线程安全方面我在第二单元的作业中做得较为顺利，这主要归功于寒假期间针对多线程进行了一定的预习，通过在 Leetcode 上练习了多线程的题目，对多线程以及与多线程有关的 <code>synchronized</code>, <code>wait-notify</code> , <code>BlockingQueue</code> , <code>Semaphore</code> , <code>ReentrantLock</code> 等概念进行了初步的了解。同时在设计电梯程序时，较好地采用了生产者消费者的设计模式，在设计缓冲区以及其他线程间的共享数据时有意识地考虑到了线程安全性，从而基本做到了”在一开始就不写出 bug” 而不是写完了再去 debug 。</p>
+<h3 id="层次化设计"><a href="#层次化设计" class="headerlink" title="层次化设计"></a>层次化设计</h3><p>层次化设计方面我做的没有前一个方面好，在第五次作业开始出现了一定程度上的 “过度设计”（例如 “假” 调度器，以及 <code>ElevatorAction</code> 这个模型，一开始自以为的可扩展性实际上在后期并没有表现出优势），好在当初的 “过度设计” 并未过于拖累后期的正确性，但是对于性能的优化造成了一定的阻碍（只能自由竞争，很难改成分布式的分派调度，如果强测不是随机数据而是极端数据则性能可能很低），代码的 Metrics 复杂度也出现了多处过高 “爆红” ，代码量也较为冗长。所以在架构设计方面仍然需要多学习。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BUAA/" rel="tag"># BUAA</a>
+              <a href="/tags/OO/" rel="tag"># OO</a>
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag"># 多线程</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/25/oo-expr-2021/" rel="prev" title="BUAA OO 第一单元（表达式求导）单元总结">
+                  <i class="fa fa-chevron-left"></i> BUAA OO 第一单元（表达式求导）单元总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/27/oo-jml-2021/" rel="next" title="BUAA OO 第三单元（ JML & 社交关系模拟） 博客总结">
+                  BUAA OO 第三单元（ JML & 社交关系模拟） 博客总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dhy2000</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
